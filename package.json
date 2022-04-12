@@ -5,11 +5,9 @@
     "hurl": "bin/hurl.js"
   },
   "scripts": {
-    "build": "tsc",
-    "bootstrap": "npm run build && npm run cdk bootstrap",
-    "deploy": "npm run build && npm run cdk deploy",
-    "local": "npm run build && sam local invoke MyFunction --no-event -t ./cdk.out/HurlStack.template.json",
-    "watch": "tsc -w",
+    "bootstrap": "npm run cdk bootstrap",
+    "deploy": "npm run cdk deploy",
+    "local": "sam local invoke MyFunction --no-event -t ./cdk.out/HurlStack.template.json",
     "test": "jest",
     "cdk": "cdk"
   },
@@ -33,7 +31,6 @@
   "dependencies": {
     "@types/aws-lambda": "^8.10.93",
     "aws-cdk-lib": "2.20.0",
-    "aws-lambda": "^1.0.7",
     "aws-sdk": "^2.1112.0",
     "constructs": "^10.0.0",
     "source-map-support": "^0.5.16"
