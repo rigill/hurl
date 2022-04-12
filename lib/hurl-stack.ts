@@ -1,15 +1,19 @@
-import {Stack, StackProps} from 'aws-cdk-lib';
-import {Construct} from 'constructs';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import * as cdk from '@aws-cdk/core';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as path from 'path';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import {Construct} from 'constructs';
+import {Stack, StackProps} from 'aws-cdk-lib';
 
 export class HurlStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const bucket = new s3.Bucket(this, 'MyBucket');
+    const bucket = new s3.Bucket(this, 'MyBucket', {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+    });
 
     const fn = new lambda.Function(this, 'MyFunction', {
       runtime: lambda.Runtime.NODEJS_14_X,

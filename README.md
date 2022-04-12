@@ -1,14 +1,16 @@
-# Welcome to your CDK TypeScript project
+1 client
 
-This is a blank project for TypeScript development with CDK.
+2 api gateway
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+3 short url `redirects short url to long url`
+  - looks up bucket sub folder with short url name
+  - (if) bucket sub folder exists use content of bucket to redirect to long url (end)
+  - (else) 404
 
-## Useful commands
-
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `cdk deploy`      deploy this stack to your default AWS account/region
-* `cdk diff`        compare deployed stack with current state
-* `cdk synth`       emits the synthesized CloudFormation template
+4 long url `creates short url from long url`
+  - covert long url to short url
+  - look up short url in s3 bucket sub folder
+  - (if) short url exists return short url (end)
+  - (else) create bucket sub folder using short url
+  - write long url inside created sub folder
+  - return short url
