@@ -1,5 +1,5 @@
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as path from 'path';
 import * as s3 from 'aws-cdk-lib/aws-s3';
