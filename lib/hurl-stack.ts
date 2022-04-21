@@ -14,7 +14,6 @@ export class HurlStack extends Stack {
     });
 
     const fn = new lambda.NodejsFunction(this, 'MyFunction', {
-      handler: 'handler',
       entry: './src/index.ts',
       environment: {
         BUCKET_NAME: bucket.bucketName,
@@ -23,8 +22,13 @@ export class HurlStack extends Stack {
 
     bucket.grantReadWrite(fn);
 
-    new apigateway.LambdaRestApi(this, 'MyApigateway', {
-      handler: fn,
+    const api = new apigateway.RestApi(this, 'MyRestApi', {
+      restApiName: 'MyRestApi',
     });
+
+    api.root.addMethod(
+        'POST',
+        new apigateway.LambdaIntegration(fn),
+    );
   }
 }
