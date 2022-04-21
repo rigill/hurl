@@ -13,14 +13,22 @@ export class HurlStack extends Stack {
       autoDeleteObjects: true,
     });
 
-    const fn = new lambda.NodejsFunction(this, 'MyFunction', {
-      entry: './src/index.ts',
+    const shortUrlFn = new lambda.NodejsFunction(this, 'ShortUrlHandler', {
+      entry: './src/shortUrlHandler.ts',
       environment: {
         BUCKET_NAME: bucket.bucketName,
       },
     });
 
-    bucket.grantReadWrite(fn);
+    const longUrlFn = new lambda.NodejsFunction(this, 'LongUrlHandler', {
+      entry: './src/longUrlHandler.ts',
+      environment: {
+        BUCKET_NAME: bucket.bucketName,
+      },
+    });
+
+    bucket.grantReadWrite(shortUrlFn);
+    bucket.grantReadWrite(longUrlFn);
 
     const api = new apigateway.RestApi(this, 'MyRestApi', {
       restApiName: 'MyRestApi',
@@ -28,7 +36,12 @@ export class HurlStack extends Stack {
 
     api.root.addMethod(
         'POST',
-        new apigateway.LambdaIntegration(fn),
+        new apigateway.LambdaIntegration(shortUrlFn),
+    );
+
+    api.root.addMethod(
+        'GET',
+        new apigateway.LambdaIntegration(longUrlFn),
     );
   }
 }
