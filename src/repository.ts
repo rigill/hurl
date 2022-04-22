@@ -7,9 +7,11 @@
 // read
 class Respository {
   constructor() { }
+
   async create(key: string, value: string): Promise<string> {
     return Promise.resolve('create');
   }
+
   async get(key: string): Promise<string> {
     return Promise.resolve('get');
   }

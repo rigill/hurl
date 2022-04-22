@@ -1,6 +1,6 @@
 import * as md5 from 'md5';
 
-export class Url {
+class Url {
   hash: string;
   original: string;
 
@@ -12,4 +12,8 @@ export class Url {
   validate(body: any): string {
     return body.toString();
   }
+}
+
+export function createUrl(body: any) {
+  return new Url(body);
 }
