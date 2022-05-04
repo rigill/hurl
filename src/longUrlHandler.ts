@@ -14,7 +14,7 @@ export async function handler(
 
   console.log('hash', hash);
 
-  if (!hash) return Response.failure();
+  if (!hash) return Response.failure('Url required');
 
   const longUrl = await repo.get(hash);
 

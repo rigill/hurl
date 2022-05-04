@@ -11,7 +11,7 @@ const repo = createRepository();
 export async function handler(
     event: APIGatewayProxyEvent,
 ): Promise<APIGatewayProxyResult> {
-  if (!event.body) return Response.failure();
+  if (!event.body) return Response.failure('Body is required');
 
   const url = createUrl(event.body);
 
@@ -21,9 +21,9 @@ export async function handler(
     return Response.failure('Url is required');
   }
 
-  const hasUrl = await repo.get(url.hash);
+  const hasShortUrl = await repo.get(url.hash);
 
-  if (!hasUrl) {
+  if (!hasShortUrl) {
     await repo.create(url.hash, url.original);
   }
 
