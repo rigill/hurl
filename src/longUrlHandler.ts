@@ -14,10 +14,10 @@ export async function handler(
 
   if (!hash) return Response.failure();
 
-  const longUrl = repo.get(hash);
+  const longUrl = await repo.get(hash);
 
   if (!longUrl) {
-    return Response.missing();
+    return Response.missing('Long url not found');
   }
 
   return Response.redirect(longUrl);

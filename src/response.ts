@@ -1,33 +1,29 @@
-export type StatusCode = {
-  statusCode: number
-}
-
-export type Headers = {
-  headers: {
-      Location: string
-  }
-}
-
-export type Body = {
-  body: any
-}
+import {
+  APIGatewayProxyResult,
+} from 'aws-lambda';
 
 export class Response {
   constructor() {}
 
-  static success(body?: any): Promise<StatusCode & Body> {
+  static success(body: string = ''): Promise<APIGatewayProxyResult> {
     return Promise.resolve({body, statusCode: 200});
   }
 
-  static failure(body?: any): Promise<StatusCode & Body> {
+  static failure(body: string = ''): Promise<APIGatewayProxyResult> {
     return Promise.resolve({body, statusCode: 500});
   }
 
-  static missing(): Promise<StatusCode> {
-    return Promise.resolve({statusCode: 404});
+  static missing(body: string= ''): Promise<APIGatewayProxyResult> {
+    return Promise.resolve({body, statusCode: 404});
   }
 
-  static redirect(location: string): Promise<Headers & StatusCode> {
-    return Promise.resolve({headers: {Location: location}, statusCode: 302});
+  static redirect(loc: string, body:string = '')
+    : Promise<APIGatewayProxyResult> {
+    return Promise.resolve({
+      body,
+      headers: {
+        Location: loc,
+      }, statusCode: 302,
+    });
   }
 }

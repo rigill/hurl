@@ -1,19 +1,45 @@
-// import {PutObjectCommand} from '@aws-sdk/client-s3';
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} from '@aws-sdk/client-s3';
+import * as streamToString from 'stream-to-string';
 
-// repo
-// delete
-// create
-// update
-// read
 class Respository {
-  constructor() { }
+  client: S3Client;
+  bucket: string;
 
-  async create(key: string, value: string): Promise<string> {
-    return Promise.resolve('create');
+  constructor() {
+    this.client = new S3Client({region: process.env.CDK_DEFAULT_REGION});
+    this.bucket = process.env.BUCKET_NAME || '';
+  }
+
+  async create(key: string, value: string): Promise<boolean> {
+    const command = new PutObjectCommand({
+      Key: key,
+      Body: value,
+      Bucket: this.bucket,
+    });
+
+    try {
+      const result = await this.client.send(command);
+      console.log(result);
+      return true;
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
   }
 
   async get(key: string): Promise<string> {
-    return Promise.resolve('get');
+    const command = new GetObjectCommand({
+      Key: key,
+      Bucket: this.bucket,
+    });
+
+    const {Body} = await this.client.send(command);
+
+    return await streamToString(Body);
   }
 }
 

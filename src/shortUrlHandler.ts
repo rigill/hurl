@@ -15,9 +15,11 @@ export async function handler(
 
   const url = createUrl(event.body);
 
-  if (!repo.get(url.hash)) {
+  const hasUrl = await repo.get(url.hash);
+
+  if (!hasUrl) {
     await repo.create(url.hash, url.original);
   }
 
-  return Response.success({body: url.hash});
+  return Response.success(url.hash);
 }
