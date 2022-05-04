@@ -3,7 +3,15 @@ import {
   PutObjectCommand,
   GetObjectCommand,
 } from '@aws-sdk/client-s3';
-import * as streamToString from 'stream-to-string';
+
+function streamToString(stream):string {
+  const chunks = [];
+  return new Promise((resolve, reject) => {
+    stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
+    stream.on('error', (err) => reject(err));
+    stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+  });
+}
 
 class Respository {
   client: S3Client;
@@ -37,9 +45,14 @@ class Respository {
       Bucket: this.bucket,
     });
 
-    const {Body} = await this.client.send(command);
+    try {
+      const {Body} = await this.client.send(command);
 
-    return await streamToString(Body);
+      return await streamToString(Body);
+    } catch (e) {
+      console.error(e);
+      return '';
+    }
   }
 }
 

@@ -15,6 +15,8 @@ export async function handler(
 
   const url = createUrl(event.body);
 
+  console.log('url', url);
+
   const hasUrl = await repo.get(url.hash);
 
   if (!hasUrl) {

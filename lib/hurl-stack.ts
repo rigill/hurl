@@ -39,7 +39,8 @@ export class HurlStack extends Stack {
         new apigateway.LambdaIntegration(shortUrlFn),
     );
 
-    api.root.addMethod(
+    const url = api.root.addResource('{url}');
+    url.addMethod(
         'GET',
         new apigateway.LambdaIntegration(longUrlFn),
     );
