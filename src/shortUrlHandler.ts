@@ -17,6 +17,10 @@ export async function handler(
 
   console.log('url', url);
 
+  if (!url.isUrl) {
+    return Response.failure('Url is required');
+  }
+
   const hasUrl = await repo.get(url.hash);
 
   if (!hasUrl) {

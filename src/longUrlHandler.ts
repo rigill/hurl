@@ -11,7 +11,6 @@ export async function handler(
     event: APIGatewayProxyEvent,
 ): Promise<APIGatewayProxyResult> {
   const hash = event.pathParameters?.url || '';
-  console.log('event', JSON.stringify(event));
 
   console.log('hash', hash);
 
